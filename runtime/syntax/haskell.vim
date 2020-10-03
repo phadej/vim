@@ -38,8 +38,8 @@ if exists("b:current_syntax")
 endif
 
 " (Qualified) identifiers (no default highlighting)
-syn match ConId "\(\<[A-Z][a-zA-Z0-9_']*\.\)\=\<[A-Z][a-zA-Z0-9_']*\>" contains=@NoSpell
-syn match VarId "\(\<[A-Z][a-zA-Z0-9_']*\.\)\=\<[a-z][a-zA-Z0-9_']*\>" contains=@NoSpell
+syn match ConId "\(\<[A-Z][a-zA-Z0-9_']*\.\)*\<[A-Z][a-zA-Z0-9_']*\>" contains=@NoSpell
+syn match VarId "\(\<[A-Z][a-zA-Z0-9_']*\.\)*\<[a-z][a-zA-Z0-9_']*\>" contains=@NoSpell
 
 " Infix operators--most punctuation characters and any (qualified) identifier
 " enclosed in `backquotes`. An operator starting with : is a constructor,
@@ -48,6 +48,9 @@ syn match hsVarSym "\(\<[A-Z][a-zA-Z0-9_']*\.\)\=[-!#$%&\*\+/<=>\?@\\^|~.][-!#$%
 syn match hsConSym "\(\<[A-Z][a-zA-Z0-9_']*\.\)\=:[-!#$%&\*\+./<=>\?@\\^|~:]*"
 syn match hsVarSym "`\(\<[A-Z][a-zA-Z0-9_']*\.\)\=[a-z][a-zA-Z0-9_']*`"
 syn match hsConSym "`\(\<[A-Z][a-zA-Z0-9_']*\.\)\=[A-Z][a-zA-Z0-9_']*`"
+
+" (Non-qualified) identifiers which start with # are labels
+syn match hsLabel "#[a-z][a-zA-Z0-9_']*\>"
 
 " Reserved symbols--cannot be overloaded.
 syn match hsDelimiter  "(\|)\|\[\|\]\|,\|;\|_\|{\|}"
@@ -69,9 +72,9 @@ syn match hsModule		"\<module\>"
 syn match hsImport		"\<import\>.*"he=s+6 contains=hsImportMod,hsLineComment,hsBlockComment,@NoSpell
 syn match hsImportMod		contained "\<\(as\|qualified\|hiding\)\>" contains=@NoSpell
 syn match hsInfix		"\<\(infix\|infixl\|infixr\)\>"
-syn match hsStructure		"\<\(class\|data\|deriving\|instance\|default\|where\)\>"
+syn match hsStructure		"\<\(class\|data\|family\|deriving\|instance\|default\|where\)\>"
 syn match hsTypedef		"\<\(type\|newtype\)\>"
-syn match hsStatement		"\<\(do\|case\|of\|let\|in\)\>"
+syn match hsStatement		"\<\(do\|mdo\|case\|of\|let\|in\)\>"
 syn match hsConditional		"\<\(if\|then\|else\)\>"
 
 " Not real keywords, but close.
@@ -160,6 +163,7 @@ hi def link hsMaybe			  hsEnumConst
 hi def link hsOrdering			  hsEnumConst
 hi def link hsEnumConst			  Constant
 hi def link hsDebug			  Debug
+hi def link hsLabel			  Special
 
 hi def link cCppString		hsString
 hi def link cCommentStart		hsComment
@@ -176,6 +180,9 @@ hi def link cCppSkip		cCppOut
 hi def link cCppOut2		cCppOut
 hi def link cCppOut		Comment
 
+" Might be useful for someone, should these be configurable?
+" hi def link ConId Type
+" hi def link VarId Identifier
 
 let b:current_syntax = "haskell"
 
